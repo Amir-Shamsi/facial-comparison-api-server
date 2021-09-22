@@ -1,1 +1,1 @@
-# Facial Recognition Api (Symfony)
+# Facial Recognition Api
