@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FRApiController extends AbstractController
 {
 
-    public function index(): Response
+    public function apiLauncher(): Response
     {
         return $this->render('fr_api/index.html.twig', [
             'controller_name' => 'FRApiController',
