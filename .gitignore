@@ -12,6 +12,8 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
+/public/assets/img/temp/
+
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache
 /phpunit.xml
