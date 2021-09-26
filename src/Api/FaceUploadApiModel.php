@@ -17,20 +17,20 @@ class FaceUploadApiModel
      */
     public $targetFace;
 
-    /**
-     * @Assert\NotBlank()
-     */
-    private $secret;
+//    /**
+//     * @Assert\NotBlank()
+//     */
+//    private $secret;
+//
+//    private $decodedSecret;
 
-    private $decodedSecret;
-
-    public function setData()
-    {
-        $this->decodedSecret = base64_decode($this->secret);
-    }
-
-    public function getDecodedData(): ?string
-    {
-        return $this->decodedSecret;
-    }
+//    public function setData()
+//    {
+//        $this->decodedSecret = base64_decode($this->secret);
+//    }
+//
+//    public function getDecodedData(): ?string
+//    {
+//        return $this->decodedSecret;
+//    }
 }
