@@ -3,16 +3,19 @@
 namespace App\Controller;
 
 use App\Api\FaceUploadApiModel;
+use App\Services\ApiImageValidation;
 use App\Services\FileService;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\File as FileObject;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\ImageValidator;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -34,6 +37,8 @@ class FRApiController extends AbstractController
      */
     public function apiLauncher(Request $request, LoggerInterface $logger, SerializerInterface $serializer, ValidatorInterface $validator): Response
     {
+        $destination = $this->getParameter('kernel.project_dir') . '\public\assets\img\temp\downloads\\';
+
         if ($request->headers->get('Content-Type') === 'application/json') {
             /** @var FaceUploadApiModel $uploadApiModel */
             try {
@@ -53,55 +58,78 @@ class FRApiController extends AbstractController
             $originalSourceFilename = $uploadApiModel->sourceFace;
             $originalTargetFilename = $uploadApiModel->targetFace;
 
-            $sourceContent = file_get_contents($originalSourceFilename);
-            $targetContent = file_get_contents($originalTargetFilename);
+            $originalSourceFilename = FileService::url_parse_filename($originalSourceFilename);
+            $originalTargetFilename = FileService::url_parse_filename($originalTargetFilename);
 
-            if($sourceContent && $targetContent) {
-                $destination = $this->getParameter(
-                        'kernel.project_dir') . '\public\assets\img\temp\downloads\\';
-                $originalSourceFilename = pathinfo($originalSourceFilename, PATHINFO_FILENAME);
-                $originalTargetFilename = pathinfo($originalTargetFilename, PATHINFO_FILENAME);
+            if(!$originalSourceFilename || !$originalTargetFilename){
+                $logger->info("url not exist!");
+                return $this->json([
+                    'urls' => [!$originalSourceFilename? 'sourceFace_url':'',!$originalTargetFilename?'targetFace_url':''] ,
+                    'error' => 'url is in a wrong format!'
+                    ], Response::HTTP_BAD_REQUEST);
+            }
+            if ($violations->count() > 0) {
+                $logger->info("validation failure");
+                return $this->json($violations, Response::HTTP_BAD_REQUEST);
+            }
+            $sourceFilename = FileService::getUniqueFilename($originalSourceFilename);
+            $targetFilename = FileService::getUniqueFilename($originalTargetFilename);
 
+            $sourceContent =FileService::create_file(
+                $destination,
+                $sourceFilename,
+                file_get_contents($uploadApiModel->sourceFace)
+            );
 
-                $sNewFilename = FileService::getUniqueFilename($originalSourceFilename);
-                $tNewFilename = FileService::getUniqueFilename($originalTargetFilename);
+            $targetContent =FileService::create_file(
+                $destination,
+                $targetFilename,
+                file_get_contents($uploadApiModel->targetFace)
+            );
 
-                $uploadedFile->move(
-                    $destination,
-                    $newFilename
-                );
-                $image = 'assets\img\uploads\\' . $jdate->date('Y') . '\\' . $jdate->date('m') . '\\' . $newFilename;
-                $user->setUserAvatar($image);
-            } else {
-                    $logger->info("image download failure");
-                    return $this->json($violations, Response::HTTP_NO_CONTENT);
+            if(!$sourceContent && !$targetContent) {
+                $logger->info("image download failure");
+                return $this->json([$sourceContent, $targetContent], Response::HTTP_NO_CONTENT);
             }
         } else {
+            /** @var UploadedFile $sourceFile */
+            $sourceFile = $request->files->get('sourceFile');
+            $targetFile = $request->files->get('targetFace');
 
+            $sourceFilename = FileService::getUniqueFilename(
+                $sourceFile->getClientOriginalName().
+                $sourceFile->guessExtension()
+            );
+            $targetFilename = FileService::getUniqueFilename(
+                $targetFile->getClientOriginalName().
+                $targetFile->guessExtension()
+            );
+
+            $sourceFile->move(
+                $destination,
+                $sourceFilename
+            );
+            $targetFile->move(
+                $destination,
+                $targetFilename
+            );
         }
-
-
-        $violations = $validator->validate(
-            $uploadedFile,
-            [
-                new NotBlank([
-                    'message' => 'Please select file to upload!'
-                ]),
-                new File([
-                    'maxSize' => '5M',
-                    'mimeTypes' => [
-                        'image/*'
-                    ],
-                    'maxSizeMessage' => 'Oops! Image is bigger than what I expected!',
-                    'mimeTypesMessage' => 'This file is not an image!'
-                ]),
-
-            ]
+        $validate = new ApiImageValidation($validator);
+        $sourceViolations = $validate->image_validate(
+            $destination.
+            $sourceFilename
         );
-        if ($violations->count() > 0) {
+
+        $targetViolations = $validate->image_validate(
+            $destination.
+            $targetFilename
+        );
+
+        if ($sourceViolations->count() > 0 || $targetViolations->count() > 0) {
             $logger->info("validation failure");
-            return $this->json($violations, Response::HTTP_BAD_REQUEST);
+            return $this->json([$sourceViolations, $targetViolations], Response::HTTP_BAD_REQUEST);
         }
+
 
         return $this->json('ok!', Response::HTTP_ACCEPTED);
 
