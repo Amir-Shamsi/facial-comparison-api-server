@@ -4,19 +4,17 @@ namespace App\Controller;
 
 use App\Api\FaceUploadApiModel;
 use App\Services\ApiImageValidation;
+use App\Services\FaceRecognition\FaceRecognition;
 use App\Services\FileService;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use phpDocumentor\Reflection\Types\This;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\File\File as FileObject;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Validator\Constraints\ImageValidator;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
@@ -58,6 +56,7 @@ class FRApiController extends AbstractController
             $originalSourceFilename = $uploadApiModel->sourceFace;
             $originalTargetFilename = $uploadApiModel->targetFace;
 
+
             $originalSourceFilename = FileService::url_parse_filename($originalSourceFilename);
             $originalTargetFilename = FileService::url_parse_filename($originalTargetFilename);
 
@@ -91,6 +90,10 @@ class FRApiController extends AbstractController
                 $logger->info("image download failure");
                 return $this->json([$sourceContent, $targetContent], Response::HTTP_NO_CONTENT);
             }
+
+            // after validation and save image we assure that urls are valid
+            $sourceFilename = $uploadApiModel->sourceFace;
+            $targetFilename = $uploadApiModel->targetFace;
         } else {
             /** @var UploadedFile $sourceFile */
             $sourceFile = $request->files->get('sourceFile');
@@ -113,6 +116,9 @@ class FRApiController extends AbstractController
                 $destination,
                 $targetFilename
             );
+            $sourceFilename = UrlGenerator::generate($sourceFilename, $request);
+            $targetFilename = UrlGenerator::generate($targetFilename, $request);
+
         }
         $validate = new ApiImageValidation($validator);
         $sourceViolations = $validate->image_validate(
@@ -130,17 +136,12 @@ class FRApiController extends AbstractController
             return $this->json([$sourceViolations, $targetViolations], Response::HTTP_BAD_REQUEST);
         }
 
-
-        return $this->json('ok!', Response::HTTP_ACCEPTED);
-
-
-    }
-
-    /**
-     * @Rest\Post("/face-rec/response")
-     */
-    public function apiResponse()
-    {
+        return FaceRecognition::comparison(
+            $sourceFilename,
+            $targetFilename,
+            $this->getParameter('kernel.project_dir'),
+            $request
+        );
 
     }
 
