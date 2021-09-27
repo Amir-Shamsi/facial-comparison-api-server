@@ -52,7 +52,7 @@ it's not up yet but when it uploads on server some strict api_tokens will be add
     ![fscs-2](/public/assets/img/fscs-2.png)
 
 ## Limitations
-- Image must be under 5MB or you get a validation error from server this limitation is just for getting fast respond for you
+- Image must be under 5MB or you get a validation error from server this limitation is just for getting fast response for you; nothing more
 - ### solution:
   - you can use [LiipImagineBundle](https://github.com/liip/LiipImagineBundle)
 
