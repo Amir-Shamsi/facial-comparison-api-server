@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Api\FaceUploadApiModel;
 use App\Services\ApiImageValidation;
+use App\Services\FaceRecognition\FaceRecognition;
 use App\Services\FileService;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Psr\Log\LoggerInterface;
@@ -11,12 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\File\File as FileObject;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Validator\Constraints\ImageValidator;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
@@ -130,9 +127,7 @@ class FRApiController extends AbstractController
             return $this->json([$sourceViolations, $targetViolations], Response::HTTP_BAD_REQUEST);
         }
 
-
-        return $this->json('ok!', Response::HTTP_ACCEPTED);
-
+        return FaceRecognition::comparison($sourceFilename, $targetFilename);
 
     }
 
