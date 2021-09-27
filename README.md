@@ -2,7 +2,7 @@
 
 [![Pre-Release version](https://img.shields.io/github/v/release/amir-shamsi/facial-comparison-api-server?style=flat-square)](https://github.com/Amir-Shamsi/facial-comparison-api-server)
 [![symfony version](https://img.shields.io/badge/symfony-%5E5.3-blue?style=flat-square)](https://symfony.com/)
-[![APM Licence](https://img.shields.io/badge/licence-CCZU-geen?style=flat-square)](https://creativecommons.org/publicdomain/zero/1.0/)
+[![APM Licence](https://img.shields.io/badge/licence-CCZU-geen?style=flat-square)](LICENSE)
 [![Follow me](https://img.shields.io/github/followers/amir-shamsi?label=follow%20me&style=social)](https://github.com/amir-shamsi)
 
 [![ForTheBadge built-with-love](http://ForTheBadge.com/images/badges/built-with-love.svg)](https://github.com/Amir-Shamsi)
