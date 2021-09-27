@@ -21,10 +21,10 @@ it's not up yet but when it uploads on server some strict api_tokens will be add
 - Post original images if you don't have urls 👥
 - Respond clearly and fast (cuz time is impotatnt) 🕘
 - Get useful information about the comparison performed (presentage & ...) 〽
-- Get clear errors if there is one with solution ⚠
+- Get clear errors if there is one, with solution ⚠
 
 ## Guide (how it works)
-- Set Content-Type to application/json in header if you want to post images by url
+- Set` Content-Type` to `application/json` in header if you want to post images by url
 
   ![fscs-0](/public/assets/img/fscs-0.png)
   
@@ -38,11 +38,11 @@ it's not up yet but when it uploads on server some strict api_tokens will be add
   
   ![fscs-4](/public/assets/img/fscs-4.png)
   
-- If you don't have image urls and you want send images For body  `sourceFace` and `targetFace` with type *File* must be defined, like this:
+- If you don't have image urls and you want to send images For body  `sourceFace` and `targetFace` with type *`File`* must be defined, like this:
 
   ![fscs-4](/public/assets/img/fscs-3.png)
   
-- The respond an result will looks like this
+- The response and result will looks like this
   - Body:
   
     ![fscs-3](/public/assets/img/fscs-3.png)
