@@ -1,7 +1,3 @@
-"""
-Provides FacePP Demo.
-"""
-
 from __future__ import print_function, unicode_literals
 
 import json
@@ -10,15 +6,10 @@ from . import FacePP, exceptions
 
 
 def face_detection(app):
-    """
-    Detect and analyze human faces within the image that you provided.
-    """
     print('[Face Detection]')
-
     img_url = 'https://www.faceplusplus.com/scripts/demoScript/images/demo-pic6.jpg'
     img = app.image.get(image_url=img_url,
                         return_attributes=['age'])
-
     print('image', '=', img)
     print('faces_count', '=', len(img.faces))
 
@@ -31,9 +22,6 @@ def face_detection(app):
 
 
 def face_comparing(app):
-    """
-    Compare two faces and decide whether they are from the same person.
-    """
     print('[Face Comparing]')
 
     img_url1 = 'https://www.faceplusplus.com/scripts/demoScript/images/demo-pic32.jpg'
@@ -49,9 +37,6 @@ def face_comparing(app):
 
 
 def faceset_initialize(app):
-    """
-    Initialize FaceSet and set `python-facepp` for outer_id.
-    """
     print('[FaceSet Initialize]')
 
     # Create FaceSet
@@ -97,9 +82,6 @@ def faceset_initialize(app):
 
 
 def face_search(app):
-    """
-    Find one or more most similar faces from Faceset, to a new face.
-    """
     print('[Face Search]')
 
     img_url = 'https://www.faceplusplus.com.cn/images/comparing/left_pic_four.jpg'
@@ -118,9 +100,6 @@ def face_search(app):
 
 
 def face_landmarks(app):
-    """
-    Locate and return keypoints of face components, including face contour, eye, eyebrow, lip and nose contour.
-    """
     print('[Face Landmarks]')
 
     img_url = 'https://www.faceplusplus.com/scripts/demoScript/images/demo-pic6.jpg'
@@ -137,9 +116,6 @@ def face_landmarks(app):
 
 
 def dense_facial_landmarks(app):
-    """
-    Accurately locate facial features and facial contours. Return 1000 facial key points.
-    """
     print('[Dense Facial Landmarks]')
 
     img_url = 'https://www.faceplusplus.com/scripts/demoScript/images/demo-pic30.jpg'
@@ -153,11 +129,6 @@ def dense_facial_landmarks(app):
 
 
 def face_attributes(app):
-    """
-    Analyze a series of face related attributes including age, gender,
-    smile intensity, head pose, eye status, emotion, beauty, eye gaze,
-    mouth status, skin status, ethnicity, face image quality and blurriness.
-    """
     print('[Face Attributes]')
 
     img_url = 'https://www.faceplusplus.com.cn/scripts/demoScript/images/demo-pic6.jpg'
@@ -178,9 +149,6 @@ def face_attributes(app):
 
 
 def beauty_score_and_emotion_recognition(app):
-    """
-    Compute beauty scores for detected faces from both male's and female's perspective.
-    """
     print('[Beauty Score | Emotion Recognition]')
 
     img_url = 'https://www.faceplusplus.com/scripts/demoScript/images/demo-pic105.jpg'

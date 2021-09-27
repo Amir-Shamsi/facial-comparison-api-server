@@ -1,7 +1,3 @@
-"""
-Provides public API.
-"""
-
 import contextlib
 import locale
 import inspect
@@ -13,23 +9,7 @@ from .version import __version__
 
 
 class FacePP(object):
-    """
-    Entry point for all requests.
-    """
     def __init__(self, api_key, api_secret, **kwargs):
-        """
-        :param string api_key: (required). Your registered API Key to call API.
-        :param string api_secret: (required). Your registered API Secret to call API.
-        :param string url: (optional). FacePP location.
-        :param string version: (optional). FacePP version.
-        :param dict requests: (optional). Connection options.
-        :param string date_format: (optional). Formatting directives for date format.
-        :param string datetime_format: (optional). Formatting directives for datetime format.
-        :param raise_attr_exception: (optional). Control over resource attribute access exception raising.
-        :type raise_attr_exception: bool or tuple
-        :param cls engine: (optional). Engine that will be used to make requests to FacePP.
-        :param bool return_raw_response (optional). Whether engine should return raw or json encoded responses.
-        """
         self.url = kwargs.get('url', None)
         if self.url is None:
             url = 'https://api-{0}.faceplusplus.com'
@@ -51,11 +31,6 @@ class FacePP(object):
         self.engine = engine(api_key=api_key, api_secret=api_secret, **kwargs)
 
     def __getattr__(self, resource_name):
-        """
-        Returns a ResourceManager object for the requested resource.
-
-        :param string resource_name: (required). Resource name.
-        """
         if resource_name.startswith('_'):
             raise AttributeError
 
@@ -73,18 +48,10 @@ class FacePP(object):
 
     @classmethod
     def version(cls):
-        """
-        FacePP package's current version.
-        """
         return __version__
 
     @contextlib.contextmanager
     def session(self, **options):
-        """
-        Initiates a temporary session with a copy of the current engine but with new options.
-
-        :param dict options: (optional). Engine's options for a session.
-        """
         engine = self.engine
         self.engine = engine.__class__(
             requests=utilities.merge_dicts(engine.requests, options.pop('requests', {})), **options)

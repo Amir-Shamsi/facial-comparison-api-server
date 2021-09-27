@@ -1,8 +1,3 @@
-"""
-Python-FacePP tries it's best to provide human readable errors in all situations.
-This is a list of all exceptions that Python-FacePP can throw.
-"""
-
 from __future__ import unicode_literals
 
 from . import utilities
@@ -24,9 +19,6 @@ class HTTPProtocolError(BaseFacePPError):
 
 
 class JSONDecodeError(BaseFacePPError):
-    """
-    Unable to decode received JSON.
-    """
     def __init__(self, response):
         self.response = response
         super(JSONDecodeError, self).__init__(
