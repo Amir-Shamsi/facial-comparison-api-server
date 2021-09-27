@@ -45,11 +45,11 @@ it's not up yet but when it uploads on server some strict api_tokens will be add
 - The response and result will looks like this
   - Body:
   
-    ![fscs-3](/public/assets/img/fscs-3.png)
+    ![fscs-1](/public/assets/img/fscs-1.png)
     
   - Header:
   
-    ![fscs-1](/public/assets/img/fscs-1.png)
+    ![fscs-2](/public/assets/img/fscs-2.png)
 
 ## Limitations
 - Image must be under 5MB or you get a validation error from server this limitation is just for getting fast respond for you
