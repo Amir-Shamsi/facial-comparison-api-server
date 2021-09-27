@@ -17,7 +17,7 @@ This is a api which has been written on symfony framework which is one of the gr
 
 - Fast execution ⚡
 - Compare your face images by posting urls ✅
-- Post original images if you don't have it's url 👥
+- Post original images if you don't have urls 👥
 - Respond clearly and fast (cuz time is impotatnt) 🕘
 - Get useful information about the comparison performed (presentage & ...) 〽
 - Get clear errors if there is one with solution ⚠
