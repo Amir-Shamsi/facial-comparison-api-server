@@ -24,7 +24,7 @@ it's not up yet but when it uploads on server some strict api_tokens will be add
 - Get clear errors if there is one, with solution ⚠
 
 ## Guide (how it works)
-- Set` Content-Type` to `application/json` in header if you want to post images by url
+- Set `Content-Type` to `application/json` in header if you want to post images by url
 
   ![fscs-0](/public/assets/img/fscs-0.png)
   
