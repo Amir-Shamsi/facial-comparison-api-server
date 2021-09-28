@@ -9,7 +9,7 @@
 
 ## An API for your dream login form
 
-This is an api which has been written on symfony framework which is one of the gratest and most powerful framework since 2005.
+This is an api which has been written by using symfony framework which is one of the greatest and most powerful framework since 2005.
 it's not up yet but when it uploads on server some strict api_tokens will be added.
 <br>
 
